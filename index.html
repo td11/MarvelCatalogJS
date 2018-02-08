@@ -1,0 +1,134 @@
+<!DOCTYPE HTML>
+<html>
+
+<head>
+    <meta charset=utf-8>
+    <title>MarvelAwards</title>
+    <link rel="stylesheet" href="CSS/estilo.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link type="text/css" rel="stylesheet" href="CSS/simplePagination.css" />
+</head>
+
+<body>
+
+    <header>
+        <ul id="cabecero">
+            <li><a href="javascript:void(0)" id="comicsenlace" class="activecabecero">Comics</a></li>
+            <li><a href="javascript:void(0)" id="personajesenlace">Personajes</a></li>
+        </ul>
+        <h2 class="w3-center" id="titulo"></h2>
+    </header>
+
+
+    <!-- <div class="w3-content w3-display-container">
+        <img id="0" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/blade-runner-2049.jpg" aria-labelledby="blade-label">
+        <p id="blade-label" class="label">Película blade runner 2049, haz clic para abrir una ventana con mas información y poder votar </p>
+
+
+        <img id="1" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/john.jpg" aria-labelledby="john-label">
+        <p id="john-label" class="label">Película John Wick 2, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="2" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/jumanji.jpg" aria-labelledby="jumanji-label">
+        <p id="jumanji-label" class="label">Película Jumanji, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="3" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/justiceleague.jpg" aria-labelledby="justice-label">
+        <p id="justice-label" class="label">Película La Liga de la Justicia, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="4" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/kingarthur.jpg" aria-labelledby="arthur-label">
+        <p id="arhur-label" class="label">Película El Rey Arturo, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="5" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/logan.jpg" aria-labelledby="logan-label">
+        <p id="logan-label" class="label">Película Logan, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="6" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/mazinger.jpg" aria-labelledby="mazinger-label">
+        <p id="mazinger-label" class="label">Película Mazinger Z, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="7" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/starwars.jpg" aria-labelledby="star-label">
+        <p id="star-label" class="label">Película Star Wars Los Ultimos Jedi, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="8" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/thor.jpg" aria-labelledby="thor-label">
+        <p id="thor-label" class="label">Película Thor Ragnarok, haz clic para abrir una ventana con mas información y poder votar </p>
+
+        <img id="9" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/valerian.jpg" aria-labelledby="valerian-label">
+        <p id="valerian-label" class="label">Película Valerian, haz clic para abrir una ventana con mas información y poder votar </p>
+
+
+        <button data-message="Boton para ir pasar las peliculas a la izquierda" class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
+        <button data-message="Boton para ir pasar las peliculas a la derecha" class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
+    </div> -->
+
+    <div id="comics">
+        <span>Aqui an los comics</span>
+        <div id="portada"></div>
+        <div class="pagination-holder clearfix" id="paginacioncomics">
+            <div id="light-pagination" class="pagination light-theme simple-pagination"></div>
+        </div>
+    </div>
+
+    <div id="personajes">
+        <span>Aqui van los personajes</span>
+        <div class="pagination-holder clearfix" id="paginacionpersonajes">
+            <div id="light-pagination" class="pagination light-theme simple-pagination"></div>
+        </div>
+    </div>
+
+    <!-- The Modal -->
+    <div alt="Ventana modal que contiene formulario para entrar en un sorteo, para votar la película e información de esta" id="modalpeliculas" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <span tabindex="0" aria-labelledby="close-label" class="close" onclick="cerrarModal()">&times;</span>
+                <p id="close-label" class="label">Boton para cerrar la ventana modal</p>
+
+                <h2 id="tituloPelicula"><span>Titulo</span></h2>
+            </div>
+            <div id="contenido" class="modal-body">
+                <p>Some text in the Modal Body</p>
+
+                <form alt="Formulario para entrar en un sorteo de dos entradas">
+                    <label>Nombre</label><br>
+                    <input id="userNombre" type="text" placeholder="Introduce tu nombre" value="" /><br><br>
+                    <label>Email</label><br>
+                    <input id="userEmail" type="email" placeholder="Introduce tu email" value="" />
+                    <br><br>
+                    <label>Telefono</label><br>
+                    <input id="userTelefono" type="number" min="9" maxlength="10" placeholder="Introduce tu telefono" value="" />
+                    <br><br>
+                    <input id="login_btn" type="button" value="Votar" aria-labelledby="votar-label" onClick="votar()" />
+                    <p id="votar-label" class="label">Boton para votar a la pelicula</p>
+                    <br><br>
+                    <label for="grafico">Selecciona el gráfico que quieres visualizar:</label>
+                    <select name="grafico" id="eleccion">
+                        <option value="original">Original</option>
+                        <option value="donut">Donut</option>
+                    </select>
+                </form>
+                <!--Gráficos-->
+                <div id="chart_div"></div>
+                <div id="donutchart" style="width: 900px; height: 500px;"></div>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <h3>Por Teodoro Sergio Reverón Afonso 2DAWA</h3>
+            </div>
+
+        </div>
+    </div>
+    <!-- fin modal -->
+
+    <!-- Scripts -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+    <script src="JS/javascript.js"></script>
+    <script src="JS/jquery.simplePagination.js"></script>
+    
+    <!-- Scripts -->
+    
+
+</body>
+
+</html>
