@@ -1,23 +1,70 @@
-var votos = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+/* 
++
++
+Me falta el tema de votar, la paginacion y 
+peticion de personajes, ya que estuve con lo 
+de el examen de recuperacion
++
++
+*/
+
+var votos = [];
+var tituloComics = [];
+var descripcionComics = [];
 var id = "";
 var enlacecomic = $("#cabecero #comicsenlace");
 var enlacepersonaje = $("#cabecero #personajesenlace");
 var cajacomics = $("#comics");
 var cajapersonajes = $("#personajes");
-
+var contenedorvacio = $('<div></div>');
+var paginacion = $('<div></div>');
+//<div class="pagination-holder clearfix" id="paginacioncomics"><div id="light-pagination" class="pagination light-theme simple-pagination"></div> </div>
 
 /* Inicio */
 $(function () {
 
+    paginacion.attr('class', 'pagination-holder clearfix');
+    paginacion.attr('id', 'paginacioncomics');
+    contenedorvacio.attr('id', 'light-pagination');
+    contenedorvacio.attr('class', 'pagination light-theme simple-pagination');
+    paginacion.append(contenedorvacio);
+
+    var marvelAPI = 'https://gateway.marvel.com/v1/public/comics';
+    $.getJSON(marvelAPI, {
+            apikey: 'd26310aa64bd024c14efa9c7d0dfa3f2'
+        })
+
+        .done(function (response) {
+            var results = response.data.results;
+            var resultsLen = results.length;
+            var output = '<ul>';
+
+            for (var i = 0; i < resultsLen; i++) {
+                votos[i] = 1;
+                var contenedor = $('<div></div>');
+                contenedor.attr('class', i);
+                if (results[i].images.length > 0) {
+                    tituloComics[i] = results[i].title;
+                    descripcionComics[i] = results[i].description;
+                    var imgPath = results[i].images[0].path + '/standard_xlarge.' + results[i].images[0].extension;
+                    output += '<li><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
+                }
+            }
+            output += '</ul>'
+            contenedor.append(output);
+            $('#comics').append(contenedor);
+        });
+
+    $('#comics').append(paginacion);
     cajapersonajes.hide();
     cajacomics.show();
-    
+
 
     /* Modales */
     eventosVentanaModal();
 
     /* Para elegir personajes o comics */
-    enlacecomic.on("click",function(){
+    enlacecomic.on("click", function () {
         enlacepersonaje.removeClass('activecabecero');
         enlacecomic.addClass('activecabecero');
         cajapersonajes.hide();
@@ -25,13 +72,13 @@ $(function () {
 
     })
 
-    enlacepersonaje.on("click",function(){
+    enlacepersonaje.on("click", function () {
         enlacecomic.removeClass('activecabecero');
         enlacepersonaje.addClass('activecabecero');
         cajacomics.hide();
         cajapersonajes.show();
     })
-    
+
     //Paginacion
     $("#paginacioncomics").pagination({
         items: 100,
@@ -48,13 +95,18 @@ $(function () {
 
 });
 
-/*Cabecera*/
-function eventosCabecera() {
 
-
-}
 
 /* Ventana modal */
+/* Cargar ventana modal */
+function ventanaModal(elemento) {
+    limpiarVentanaModal();
+    id = $(elemento).attr("id");
+    $("body .modal").css('display', 'block');
+    $(".modal-header #tituloComic").append("<span>" + tituloComics[parseInt(id)] + "</span>");
+    $(".modal-body").append("<p>" + descripcionComics[parseInt(id)] + "</p>");
+}
+
 function eventosVentanaModal() {
     // When the user clicks on <span> (x), close the modal
     $("div .close").onclick = function () {
@@ -81,7 +133,7 @@ function eventosVentanaModal() {
 }
 
 function cargarPaginacion() {
-    
+
 }
 
 /* control de votos */
@@ -102,17 +154,7 @@ function votar() {
 }
 
 
-/* Cargar ventana modal */
-function ventanaModal(elemento) {
-    limpiarVentanaModal();
-    id = $(elemento).attr("id");
-    $("body .modal").css('display', 'block');
-    $.getJSON("JS/datosimagenes.json", function (json) {
-        console.log(json.datosImagenes[0].titulo);
-        $(".modal-header #tituloPelicula").append("<span>" + json.datosImagenes[parseInt(id)].titulo + "</span>");
-        $(".modal-body").append("<p>" + json.datosImagenes[parseInt(id)].sinopsis + "</p>");
-    });
-}
+
 
 
 
