@@ -29,7 +29,7 @@ $(function () {
     contenedorvacio.attr('class', 'pagination light-theme simple-pagination');
     paginacion.append(contenedorvacio);
 
-    var marvelAPI = 'https://gateway.marvel.com/v1/public/comics';
+    var marvelAPI = 'https://gateway.marvel.com:443/v1/public/comics?format=comic&formatType=comic&limit=10';
     $.getJSON(marvelAPI, {
             apikey: 'd26310aa64bd024c14efa9c7d0dfa3f2'
         })
@@ -38,24 +38,23 @@ $(function () {
             var results = response.data.results;
             var resultsLen = results.length;
             var output = '<ul>';
+            var contenedor = $('#contenedorComics');
 
             for (var i = 0; i < resultsLen; i++) {
                 votos[i] = 1;
-                var contenedor = $('<div></div>');
                 contenedor.attr('class', i);
                 if (results[i].images.length > 0) {
                     tituloComics[i] = results[i].title;
                     descripcionComics[i] = results[i].description;
                     var imgPath = results[i].images[0].path + '/standard_xlarge.' + results[i].images[0].extension;
-                    output += '<li><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
+                    output += '<li class="loscomicslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
                 }
             }
             output += '</ul>'
             contenedor.append(output);
-            $('#comics').append(contenedor);
         });
 
-    $('#comics').append(paginacion);
+    //$('#comics').append(paginacion);
     cajapersonajes.hide();
     cajacomics.show();
 
@@ -168,7 +167,7 @@ function cerrarModal() {
 
 /* Vaciar ventana modal */
 function limpiarVentanaModal() {
-    $(".modal-header #tituloPelicula span").remove();
+    $("#tituloComic span").remove();
     $("#contenido p").remove();
 }
 

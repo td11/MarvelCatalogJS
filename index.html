@@ -20,55 +20,21 @@
         <h2 class="w3-center" id="titulo"></h2>
     </header>
 
-
-    <!-- <div class="w3-content w3-display-container">
-        <img id="0" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/blade-runner-2049.jpg" aria-labelledby="blade-label">
-        <p id="blade-label" class="label">Película blade runner 2049, haz clic para abrir una ventana con mas información y poder votar </p>
-
-
-        <img id="1" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/john.jpg" aria-labelledby="john-label">
-        <p id="john-label" class="label">Película John Wick 2, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="2" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/jumanji.jpg" aria-labelledby="jumanji-label">
-        <p id="jumanji-label" class="label">Película Jumanji, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="3" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/justiceleague.jpg" aria-labelledby="justice-label">
-        <p id="justice-label" class="label">Película La Liga de la Justicia, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="4" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/kingarthur.jpg" aria-labelledby="arthur-label">
-        <p id="arhur-label" class="label">Película El Rey Arturo, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="5" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/logan.jpg" aria-labelledby="logan-label">
-        <p id="logan-label" class="label">Película Logan, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="6" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/mazinger.jpg" aria-labelledby="mazinger-label">
-        <p id="mazinger-label" class="label">Película Mazinger Z, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="7" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/starwars.jpg" aria-labelledby="star-label">
-        <p id="star-label" class="label">Película Star Wars Los Ultimos Jedi, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="8" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/thor.jpg" aria-labelledby="thor-label">
-        <p id="thor-label" class="label">Película Thor Ragnarok, haz clic para abrir una ventana con mas información y poder votar </p>
-
-        <img id="9" tabindex="0" class="mySlides" onclick="ventanaModal(this)" src="img/valerian.jpg" aria-labelledby="valerian-label">
-        <p id="valerian-label" class="label">Película Valerian, haz clic para abrir una ventana con mas información y poder votar </p>
-
-
-        <button data-message="Boton para ir pasar las peliculas a la izquierda" class="w3-button w3-black w3-display-left" onclick="plusDivs(-1)">&#10094;</button>
-        <button data-message="Boton para ir pasar las peliculas a la derecha" class="w3-button w3-black w3-display-right" onclick="plusDivs(1)">&#10095;</button>
-    </div> -->
-
     <div id="comics">
-       <img src="img/Marvel-Logo.png" alt="Logo Marvel" width="100" height="60">
-       <br>
+        <img src="img/Marvel-Logo.png" alt="Logo Marvel" width="100" height="60">
+        <br>
         <span>Escoge tu comic favorito y vótalo a mejor comic</span>
-        
+        <div id="contenedorComics"></div>
+        <div class="pagination-holder clearfix" id="paginacioncomics" style="margin-top: 20em; padding: 2em;">
+            <div id="light-pagination" class="pagination light-theme simple-pagination"></div>
+        </div>
     </div>
 
     <div id="personajes">
         <img src="img/Marvel-Logo.png" alt="Logo Marvel" width="42" height="42">
         <span>Aqui van los personajes</span>
-        <div class="pagination-holder clearfix" id="paginacionpersonajes">
+        <div id="contenedorPersonajes"></div>
+        <div class="pagination-holder clearfix" id="paginacionpersonajes" style="margin-top: 20em;padding: 2em;">
             <div id="light-pagination" class="pagination light-theme simple-pagination"></div>
         </div>
     </div>
@@ -126,9 +92,9 @@
     <script type="text/javascript" src="https://www.google.com/jsapi"></script>
     <script src="JS/javascript.js"></script>
     <script src="JS/jquery.simplePagination.js"></script>
-    
+
     <!-- Scripts -->
-    
+
 
 </body>
 
