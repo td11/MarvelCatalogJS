@@ -5,7 +5,7 @@ Me falta el tema de votar, la paginacion y
 peticion de personajes, ya que estuve con lo 
 de el examen de recuperacion
 +
-+
++/
 */
 
 var votos = [];
@@ -23,41 +23,11 @@ var paginacion = $('<div></div>');
 /* Inicio */
 $(function () {
 
-    paginacion.attr('class', 'pagination-holder clearfix');
-    paginacion.attr('id', 'paginacioncomics');
-    contenedorvacio.attr('id', 'light-pagination');
-    contenedorvacio.attr('class', 'pagination light-theme simple-pagination');
-    paginacion.append(contenedorvacio);
+    //Cargamos los comics y los personajes
+    cargarComics();
 
-    var marvelAPI = 'https://gateway.marvel.com:443/v1/public/comics?format=comic&formatType=comic&limit=10';
-    $.getJSON(marvelAPI, {
-            apikey: 'd26310aa64bd024c14efa9c7d0dfa3f2'
-        })
-
-        .done(function (response) {
-            var results = response.data.results;
-            var resultsLen = results.length;
-            var output = '<ul>';
-            var contenedor = $('#contenedorComics');
-
-            for (var i = 0; i < resultsLen; i++) {
-                votos[i] = 1;
-                contenedor.attr('class', i);
-                if (results[i].images.length > 0) {
-                    tituloComics[i] = results[i].title;
-                    descripcionComics[i] = results[i].description;
-                    var imgPath = results[i].images[0].path + '/standard_xlarge.' + results[i].images[0].extension;
-                    output += '<li class="loscomicslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
-                }
-            }
-            output += '</ul>'
-            contenedor.append(output);
-        });
-
-    //$('#comics').append(paginacion);
     cajapersonajes.hide();
     cajacomics.show();
-
 
     /* Modales */
     eventosVentanaModal();
@@ -96,6 +66,55 @@ $(function () {
 
 
 
+function cargarComics() {
+    var cantidadItems = 0;
+    var consultaComics = 'https://gateway.marvel.com:443/v1/public/comics?limit=100&offset=0&apikey=d26310aa64bd024c14efa9c7d0dfa3f2';
+
+    $.ajax({
+            url: consultaComics,
+            dataType: 'json',
+            type: 'GET',
+
+            success: function (response) {
+                var results = response.data.results;
+                var resultsLen = results.length;
+                cantidadItems = results.length;
+                var output = '<ul>';
+                var contenedor = $('#contenedorComics');
+
+                for (var i = 0; i < resultsLen; i++) {
+                    votos[i] = 1;
+                    contenedor.attr('class', i);
+                    if (results[i].images.length > 0) {
+                        tituloComics[i] = results[i].title;
+                        descripcionComics[i] = results[i].description;
+                        var imgPath = results[i].images[0].path + '/standard_xlarge.' + results[i].images[0].extension;
+                        output += '<li class="loscomicslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
+                    }
+                }
+                output += '</ul>'
+                contenedor.append(output);
+
+                cargarPaginacionComics(cantidadItems);
+
+            },
+            error: function (jqXHR, status) {
+                alert('Hubo un error al cargar los datos.');
+            },
+            beforeSend: function () {
+                $('#spinner').html('<img src="img/spinnerloading.gif />"');
+            },
+            complete: function () {
+                $('#spinner').html('');
+            }
+    });
+}
+
+function cargarPersonajes() {
+
+}
+
+
 /* Ventana modal */
 /* Cargar ventana modal */
 function ventanaModal(elemento) {
@@ -131,8 +150,22 @@ function eventosVentanaModal() {
     });
 }
 
-function cargarPaginacion() {
+function cargarPaginacionComics(cantidadItems) {
 
+    paginate({
+        itemSelector: "#contenedorResultados div",
+        paginationSelector: "#paginadorComics",
+        itemsPerPage: 10
+    });
+
+}
+
+function cargarPaginacionPersonajes(cantidadItems) {
+    paginate({
+        itemSelector: "#contenedorResultados div",
+        paginationSelector: "#paginadorPersonajes",
+        itemsPerPage: 10
+    });
 }
 
 /* control de votos */
@@ -171,32 +204,26 @@ function limpiarVentanaModal() {
     $("#contenido p").remove();
 }
 
-/* Slider */
-/* var slideIndex = 1;
-showDivs(slideIndex);
-
-function plusDivs(n) {
-    showDivs(slideIndex += n);
-}
-
-function showDivs(n) {
-    var i;
-    var x = document.getElementsByClassName("mySlides");
-    if (n > x.length) {
-        slideIndex = 1
-    }
-    if (n < 1) {
-        slideIndex = x.length
-    }
-    for (i = 0; i < x.length; i++) {
-        x[i].style.display = "none";
-    }
-    x[slideIndex - 1].style.display = "block";
-}
-*/
-/*Fin Slider */
 
 /* Paginador */
+function paginate(options) {
+    var items = $(options.itemSelector);
+    var numItems = items.length;
+    var perPage = options.itemsPerPage;
+    items.slice(perPage).hide();
+    $(options.paginationSelector).pagination({
+        items: numItems,
+        itemsOnPage: perPage,
+        cssStyle: "dark-theme",
+        onPageClick: function (pageNumber) {
+            var showFrom = perPage * (pageNumber - 1);
+            var showTo = showFrom + perPage;
+            items.hide()
+                .slice(showFrom, showTo).show();
+            return false;
+        }
+    });
+}
 /* Fin Paginador */
 
 /* Graficos */
