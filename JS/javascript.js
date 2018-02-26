@@ -7,10 +7,12 @@ de el examen de recuperacion
 +
 +/
 */
-
-var votos = [];
+var votosComics = [];
+var votosPersonaje = [];
 var tituloComics = [];
 var descripcionComics = [];
+var nombrePersonaje = [];
+var descripcionPersonaje = [];
 var id = "";
 var enlacecomic = $("#cabecero #comicsenlace");
 var enlacepersonaje = $("#cabecero #personajesenlace");
@@ -25,6 +27,7 @@ $(function () {
 
     //Cargamos los comics y los personajes
     cargarComics();
+    cargarPersonajes();
 
     cajapersonajes.hide();
     cajacomics.show();
@@ -71,58 +74,108 @@ function cargarComics() {
     var consultaComics = 'https://gateway.marvel.com:443/v1/public/comics?limit=100&offset=0&apikey=d26310aa64bd024c14efa9c7d0dfa3f2';
 
     $.ajax({
-            url: consultaComics,
-            dataType: 'json',
-            type: 'GET',
+        url: consultaComics,
+        dataType: 'json',
+        type: 'GET',
 
-            success: function (response) {
-                var results = response.data.results;
-                var resultsLen = results.length;
-                cantidadItems = results.length;
-                var output = '<ul>';
-                var contenedor = $('#contenedorComics');
+        success: function (response) {
+            var results = response.data.results;
+            var resultsLen = results.length;
+            cantidadItems = results.length;
+            var output = '<ul>';
+            var contenedor = $('#contenedorComics');
 
-                for (var i = 0; i < resultsLen; i++) {
-                    votos[i] = 1;
-                    contenedor.attr('class', i);
-                    if (results[i].images.length > 0) {
-                        tituloComics[i] = results[i].title;
-                        descripcionComics[i] = results[i].description;
-                        var imgPath = results[i].images[0].path + '/standard_xlarge.' + results[i].images[0].extension;
-                        output += '<li class="loscomicslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModal(this)" ><br></li>';
-                    }
+            for (var i = 0; i < resultsLen; i++) {
+                votosComics[i] = 1;
+                contenedor.attr('class', i);
+                if (results[i].images.length > 0) {
+                    tituloComics[i] = results[i].title;
+                    descripcionComics[i] = results[i].description;
+                    var imgPath = results[i].images[0].path + '/portrait_incredible.' + results[i].images[0].extension;
+                    output += '<li class="loscomicslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModalComic(this)" ><br></li>';
                 }
-                output += '</ul>'
-                contenedor.append(output);
-
-                cargarPaginacionComics(cantidadItems);
-
-            },
-            error: function (jqXHR, status) {
-                alert('Hubo un error al cargar los datos.');
-            },
-            beforeSend: function () {
-                $('#spinner').html('<img src="img/spinnerloading.gif />"');
-            },
-            complete: function () {
-                $('#spinner').html('');
             }
+            output += '</ul>'
+            contenedor.append(output);
+
+            cargarPaginacionComics(cantidadItems);
+
+        },
+        error: function (jqXHR, status) {
+            alert('Hubo un error al cargar los datos.');
+        },
+        beforeSend: function () {
+            var imagen = $('<img/>');
+            imagen.attr('src', 'img/spinnerloading.gif');
+            $('#spinner').append(imagen);
+        },
+        complete: function () {
+            $('#spinner').html('');
+        }
     });
 }
 
 function cargarPersonajes() {
+    var cantidadItems = 0;
+    var consultaPersonajes = 'https://gateway.marvel.com:443/v1/public/characters?limit=100&offset=0&apikey=d26310aa64bd024c14efa9c7d0dfa3f2';
 
+    $.ajax({
+        url: consultaPersonajes,
+        dataType: 'json',
+        type: 'GET',
+
+        success: function (response) {
+            var results = response.data.results;
+            var resultsLen = results.length;
+            cantidadItems = results.length;
+            var output = '<ul>';
+            var contenedor = $('#contenedorPersonajes');
+
+            for (var i = 0; i < resultsLen; i++) {
+                votosPersonajes[i] = 1;
+                contenedor.attr('class', i);
+                nombrePersonaje[i] = results[i].name;
+                descripcionPersonaje[i] = results[i].description;
+                var imgPath = results[i].thumbnail.path + '/portrait_incredible.' + results[i].thumbnail.extension;
+                output += '<li class="lospersonajeslista"><img id="' + i + '"src="' + imgPath + '" onclick="ventanaModalPersonaje(this)" ><br></li>';
+            }
+            output += '</ul>'
+            contenedor.append(output);
+
+            cargarPaginacionPersonajes(cantidadItems);
+
+        },
+        error: function (jqXHR, status) {
+            alert('Hubo un error al cargar los datos.');
+        },
+        beforeSend: function () {
+            var imagen = $('<img/>');
+            imagen.attr('src', 'img/spinnerloading.gif');
+            $('#spinner').append(imagen);
+        },
+        complete: function () {
+            $('#spinner').html('');
+        }
+    });
 }
 
 
 /* Ventana modal */
 /* Cargar ventana modal */
-function ventanaModal(elemento) {
+function ventanaModalComic(elemento) {
     limpiarVentanaModal();
     id = $(elemento).attr("id");
     $("body .modal").css('display', 'block');
     $(".modal-header #tituloComic").append("<span>" + tituloComics[parseInt(id)] + "</span>");
     $(".modal-body").append("<p>" + descripcionComics[parseInt(id)] + "</p>");
+}
+
+function ventanaModalPersonaje(elemento) {
+    limpiarVentanaModal();
+    id = $(elemento).attr("id");
+    $("body .modal").css('display', 'block');
+    $(".modal-header #tituloComic").append("<span>" + nombrePersonaje[parseInt(id)] + "</span>");
+    $(".modal-body").append("<p>" + descripcionPersonaje[parseInt(id)] + "</p>");
 }
 
 function eventosVentanaModal() {
@@ -132,7 +185,7 @@ function eventosVentanaModal() {
     }
     // When the user clicks anywhere outside of the modal, close it
     window.onclick = function (event) {
-        if (event.target == $("#modalpeliculas")) {
+        if (event.target == $("#modal")) {
             $("body .modal").css('display', 'none');
         }
     }
@@ -153,8 +206,8 @@ function eventosVentanaModal() {
 function cargarPaginacionComics(cantidadItems) {
 
     paginate({
-        itemSelector: "#contenedorResultados div",
-        paginationSelector: "#paginadorComics",
+        itemSelector: "#contenedorComics li",
+        paginationSelector: "#paginacioncomics",
         itemsPerPage: 10
     });
 
@@ -162,8 +215,8 @@ function cargarPaginacionComics(cantidadItems) {
 
 function cargarPaginacionPersonajes(cantidadItems) {
     paginate({
-        itemSelector: "#contenedorResultados div",
-        paginationSelector: "#paginadorPersonajes",
+        itemSelector: "#contenedorPersonajes li",
+        paginationSelector: "#paginacionpersonajes",
         itemsPerPage: 10
     });
 }
@@ -286,7 +339,7 @@ function drawChart() {
 
     // Set chart options
     var options = {
-        'title': 'Votaciones Mejor Pelicula del año',
+        'title': 'Votaciones',
         'width': 400,
         'height': 300
     };
@@ -316,7 +369,7 @@ function drawDonut() {
     ]);
 
     var options = {
-        title: 'Votos mejor pelicula del año segundo grafico',
+        title: 'Votos',
         pieHole: 0.4,
     };
 
